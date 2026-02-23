@@ -1,0 +1,33 @@
+int global_var;
+
+int sum(int a, int b) {
+    int result;
+    result = a + b;
+    return result;
+}
+
+void main() {
+    int x, y;
+    float z;
+    x = 5;
+    y = 10;
+    z = 3.14;
+    
+    if (x < y) {
+        x++;
+    } else {
+        y--;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        z = z + 1.0;
+    }
+
+    while (x < y) {
+        x = x + 1;
+    }
+
+    printf(x);
+    printf(z);
+    return;
+}
