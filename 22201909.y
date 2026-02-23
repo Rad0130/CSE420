@@ -12,12 +12,16 @@ extern int lines;
 
 using namespace std;
 
+int lines;
+ofstream outlog;
+
 void yyerror(char *s) {
     cerr << "Error at line " << lines << ": " << s << endl;
 }
 %}
 
 /* Token Declarations */
+%token DECOP
 %token IF ELSE FOR WHILE DO BREAK
 %token INT FLOAT VOID CHAR DOUBLE
 %token RETURN SWITCH CASE DEFAULT CONTINUE GOTO PRINTF
@@ -138,6 +142,9 @@ statement
         { $$ = new symbol_info("while("+$3->getname()+")\n"+$5->getname(),"stmnt"); }
     | PRINTF LPAREN ID RPAREN SEMICOLON
         { $$ = new symbol_info("printf("+$3->getname()+");","stmnt"); }
+    | RETURN SEMICOLON
+        { $$ = new symbol_info("return;","stmnt"); }
+
     | RETURN expression SEMICOLON
         { $$ = new symbol_info("return "+$2->getname()+";","stmnt"); }
     ;
@@ -230,6 +237,7 @@ arguments
     | logic_expression
         { $$ = $1; }
     ;
+
 
 %%
 

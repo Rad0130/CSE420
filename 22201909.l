@@ -27,6 +27,7 @@ extern ofstream outlog;
 /* Regular Definitions */
 
 delim	 [ \t\v\r]
+newline     \n+
 
 /* write regular expressions for whitespace and newline */
 
@@ -34,9 +35,6 @@ letter_     [A-Za-z_]
 digit       [0-9]
 
 ws          [ \t\v\r]+
-{newline} {
-    lines++;
-}
 id          {letter_}({letter_}|{digit})*
 int_const   {digit}+
 float_const ({digit}+"."{digit}*([Ee][+-]?{digit}+)?|"."{digit}+([Ee][+-]?{digit}+)?|{digit}+[Ee][+-]?{digit}+)
@@ -127,11 +125,9 @@ printf      { outlog<<"Line no "<<lines<<": Token <PRINTF> Lexeme "<<yytext<<" f
         }
 
 "--"    {
-            symbol_info *s = new symbol_info((string)yytext,"INCOP");
-            yylval = (YYSTYPE)s;
-            loglist="Line no "+to_string(lines)+": Token <INCOP> Lexeme "+yytext+" found\n\n";
-            outlog<<loglist;
-            return INCOP;
+            symbol_info *s = new symbol_info((string)yytext,"DECOP");
+            yylval = s;
+            return DECOP;
         }
 
 "+"|"-"	    {
@@ -254,3 +250,5 @@ printf      { outlog<<"Line no "<<lines<<": Token <PRINTF> Lexeme "<<yytext<<" f
 . {
     outlog<<"Line no "<<lines<<": Unrecognized character "<<yytext<<"\n\n";
 }
+
+%%
